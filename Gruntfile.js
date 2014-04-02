@@ -45,12 +45,6 @@ module.exports = function(grunt) {
 				files: {
 					'vendor/js/ready.js': 'bower_components/domready/ready.js'
 				}
-			},
-			work : {
-				files : {
-					'../webroot/js/taby.js': './taby.js',
-					'../webroot/css/taby.css': './taby.css'
-				}
 			}
 		},
 		sass: {
@@ -80,14 +74,14 @@ module.exports = function(grunt) {
 				files: watch_files,
 				tasks: ['jshint'],
 				options : {
-					livereload : true
+					livereload : false
 				}
 			},
 			sass : {
 				files: ['scss/*.scss'],
 				tasks: ['sass'],
 				options : {
-					livereload : true
+					livereload : false
 				}
 			}
 		}
@@ -103,8 +97,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-bower-install-simple');
 	grunt.loadNpmTasks('grunt-contrib-sass');
 
-	grunt.registerTask('dev_work', ['jshint', 'sass', 'watch']);
-	grunt.registerTask('dev_home', ['jshint', 'sass', 'watch', 'concat:work']);
+	grunt.registerTask('default', ['jshint', 'sass', 'watch']);
 
 	grunt.registerTask('bower', [
 		'clean:bower',

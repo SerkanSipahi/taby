@@ -1,3 +1,56 @@
- body {
-    color: blue;
- }
+.tmp-wrapper {
+	max-width : 600px;
+	margin : 5% auto 0 auto;
+}
+html * {
+	@include box-sizing(border-box);
+}
+.hidden { display:none !important; }
+.show   { display:block !important; }
+
+$tab-padding : 10px;
+$tab-height  : 45px;
+
+.taby[data-tab]{
+
+	ul {
+		position:relative;
+
+		ul {
+			position: absolute;
+			top: $tab-height;
+			left:0; right:0;
+		}
+
+		padding:0; margin:0;
+		list-style-type:none;
+
+		li {
+			background-color: gray;
+		}
+
+		> li {
+			height: $tab-height;
+			text-align : center; // diesen Wert ueber plugin selber setzten koennen
+			padding: $tab-padding;
+			border: 1px solid red;
+			float:left;
+			z-index: 1;
+		}
+
+		> li[data-taby-fixed-size]{
+			height: $tab-height;
+			width: $tab-height;
+			position: absolute;
+			right: 0; top: 0;
+			padding: $tab-padding;
+			z-index: 2;
+
+			//debug attributes
+			background-color: blue;
+			opacity: 0.5;
+		}
+
+		ul { display:none; padding:0; list-style-type:none; margin:0;}
+	}
+}

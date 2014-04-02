@@ -1,5 +1,8 @@
+.sass-cache
+taby.css
 node_modules
 bower_components
 sass/bootstrap
 sass/bootstrap.scss
 vendor
+skeleton.css
