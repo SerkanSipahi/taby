@@ -4,14 +4,17 @@ var Taby = (function(document, window, undefined){
 
 	// > feature detecting
 	var _feature = {
-		querySelectorAll : !!document.querySelectorAll,
-		functionBind     : !!Function.prototype.bind,
-		addClass         : !!Element.prototype.addClass,
-		removeClass      : !!Element.prototype.removeClass,
+		querySelectorAll         : !!document.querySelectorAll,
+		functionBind             : !!Function.prototype.bind,
+		addClass                 : !!Element.prototype.addClass,
+		removeClass              : !!Element.prototype.removeClass,
+		hasClass                 : !!Element.prototype.hasClass,
+		getAllClosestClass       : !!Element.prototype.getAllClosestClass,
 
-		addEventListener : !!Element.prototype.addEventListener,
-		preventDefault   : !!Event.prototype.preventDefault,
-		stopPropagation  : !!Event.prototype.stopPropagation,
+		addEventListener         : !!Element.prototype.addEventListener,
+		preventDefault           : !!Event.prototype.preventDefault,
+		stopPropagation          : !!Event.prototype.stopPropagation,
+
 	};
 
 	// > helper Functions
@@ -26,11 +29,60 @@ var Taby = (function(document, window, undefined){
 			}
 			tmpContainer.push(classname);
 			this.className = tmpContainer.join(' ');
+
+			return this;
 		};
 	}
 	if(!_feature.removeClass){
 		Element.prototype.removeClass = function(classname){
 			this.className = this.className.replace(classname, '');
+			return this;
+		};
+	}
+	if(!_feature.hasClass){
+		Element.prototype.hasClass = function(classname){
+			var pattern =  new RegExp(classname);
+			if(pattern.test(this.className)){
+				return true;
+			} else {
+				return false;
+			}
+		};
+	}
+	if(!_feature.getAllClosestClass){
+		Element.prototype.getAllClosestClass = function(parentElement,  upToEndElement){
+
+			/*
+			 * todo: @target kann ein domNode oder ein Element, Id, Class oder ein mix aus allen sein !
+			 * todo; @parentElement kann ein Element, Id, Class oder ein mix aus allen drei sein !
+			 * todo: @upToEndElement kann ein Element, ID, Class oder ein mix aus allen drei sein !
+			 */
+
+			var parentClassName='',
+				tmpContainer =[],
+				pattern=new RegExp(upToEndElement),
+				target=null;
+
+			target=this;
+			tmpContainer.push(target);
+
+			/*
+			 * das matchen über !pattern.test(parentClassName) ist zu unsicher!
+			 * in diesem Fall soll bis class taby die while schleife laufen ! aber
+			 * bis zu seinem weg sind li tags mit taby-active vorhanden, diese können
+			 * auch gemachted werden. Also genauere Prüfung
+			 **/
+			while(!pattern.test(parentClassName)){
+				var $parentNode = target.parentNode;
+				if($parentNode.nodeName.toLowerCase()===parentElement){
+					tmpContainer.push($parentNode);
+				}
+				target = $parentNode;
+				parentClassName = $parentNode.className;
+
+			}
+
+			return tmpContainer;
 		};
 	}
 
@@ -154,6 +206,7 @@ var Taby = (function(document, window, undefined){
 		this.tabNamespaces    = '.taby';
 		this.tab              = '.taby[data-tab]';
 		this.tabContent       = '.taby[data-tab-content]';
+		this.tabLockEl        = '.taby-lock',
 		this.$tabyFixedEl     = {};
 		this.$tabs            = {};
 		this.tabsLength       = 0;
@@ -164,6 +217,8 @@ var Taby = (function(document, window, undefined){
 		this.deeperTabsLength = 0;
 		this.$children        = {};
 		this.childrenLength   = 0;
+
+		this.lastActiveTabs   = null;
 
 		// > init helpers
 		_initQuerySelector();
@@ -207,6 +262,25 @@ var Taby = (function(document, window, undefined){
 
 			}
 		},
+		handleActiveTabs : function($target, parentElement, addClass, upToElement){
+
+			var i, length;
+
+			if(this.lastActiveTabs!== null){
+				for(i=0, length=this.lastActiveTabs.length;i<length;i++){
+					this.lastActiveTabs[i].removeClass('taby-active');
+				}
+			}
+			// >>> $target.getAllClosest('li').until('.taby');
+			// >>> $target.closest('*li').until('.taby');
+			this.lastActiveTabs = $target.getAllClosestClass('li', 'taby');
+
+			for(i=0, length=this.lastActiveTabs.length;i<length;i++){
+				this.lastActiveTabs[i].addClass('taby-active');
+			}
+
+
+		},
 		setEvents : function(){
 
 			var event = {};
@@ -231,7 +305,16 @@ var Taby = (function(document, window, undefined){
 						target = e.target.parentNode;
 					} else {
 						$thisAElement = e.target.children[0];
+						if(e.target.children.length===0){
+							return;
+						}
 					}
+
+					// >>> *******************************
+					// >>> set active class
+
+					$self.handleActiveTabs(target);
+
 					// >>> ende delegation auslagern
 
 					var $thisChildTarget = target.querySelector('ul'),
@@ -248,13 +331,14 @@ var Taby = (function(document, window, undefined){
 
 					// >>> start closest auslagern
 					var parentClassName='';
-					while(parentClassName!=='taby'){
+					while(!/^taby$/.test(parentClassName)){
 						var $parentNode = $thisChildTarget.parentNode;
 						if($parentNode.nodeName.toLowerCase()==='ul'){
 							tmpUlContainer.push($parentNode);
 						}
 						$thisChildTarget = $parentNode;
-						parentClassName = $parentNode.className;
+						parentClassName = $parentNode.className.replace(' ', '');
+
 					}
 					// >>> end closest auslagern
 
@@ -307,14 +391,33 @@ var Taby = (function(document, window, undefined){
 						}
 					}
 
+
+
 				};
 
 			// >>> first self call
-			event.target=$(this.tab + ' > ul > li')[0];
+			event.target=$(this.tab + ' ul li')[0];
 			callback.call(null, event);
 
-			// >>> eventHandler registrieren
+			// >>> handle tabs handler
 			$(this.tab + ' ul')[0].addEventListener('click', callback);
+
+			// >>> close tab handler
+			var $locks = $(this.tabLockEl);
+
+			for(var i= 0, length=$locks.length; i<length;i++){
+				$locks[i].addEventListener('click', function(e){
+					if(!$lastShowedTab.hasClass('hidden') && !$($self.tab)[0].hasClass('hidden')){
+						$lastShowedTab.addClass('hidden');
+						$($self.tab)[0].addClass('hidden');
+					} else {
+						$($self.tab)[0].removeClass('hidden');
+						event.target=$($self.tab + ' > ul > li')[0];
+						callback.call(null, event);
+					}
+				});
+			}
+
 		}
 
 	};
