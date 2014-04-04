@@ -2,145 +2,6 @@ var Taby = (function(document, window, undefined){
 
 	'use strict';
 
-	/**
-	*
-	*	// > Tabs Definition as JSONObj
-	*
-	*	var tabsDefinition = [
-	*		'Tipps' : {
-	*			'__attr__' : {
-	*				'class' : 'some-class onhover',
-	*				'id' : 'some-id',
-	*				'data-foo' : 'foo'
-	*			}
-	*			'__isOpen__' : true,
-	*			'__content__ : new Tippsview(item)
-	*		}
-	*		'Bewertungen',
-	*		'Informationen' : {
-	*			'__attr__' : {
-	*				'class' : 'some-class1 some-class2 subtav-container'
-	*			},
-	*			'__sub-tabs__' : {
-	*				'Fahrzeug' : {
-	*					'__attr__' : {
-	*						'class' : 'some-class onhover',
-	*						'id' : 'some-id',
-	*						'data-foo' : 'foo',
-	*					}
-	*					'__content__ : function(){var v = new Fahrzeugview(item); return v.render(); }
-	*				},
-	*				'Vermieter' : {
-	*					'__attr__' : {
-	*						'class' : 'some-class onhover',
-	*						'id' : 'some-id',
-	*						'data-foo' : 'foo',
-	*					},
-	*					'__isOpen__' : true,
-	*					'__content__ : new Vermieterview(item)
-	*				},
-	*				'Station : {
-	*					'__attr__' : {
-	*						'class' : 'some-class onhover',
-	*						'id' : 'some-id',
-	*						'data-foo' : 'foo',
-	*					}
-	*					'__content__ : new Stationview(item)
-	*				}
-	*			}
-	*		},
-	*		'__empty__' : {
-	*			'__attr__' : {
-	*				class : 'show-hide-icon'
-	*				data-taby-toggle-visibility : '',
-	*			}
-	*		}
-	*	]
-	*
-	*	var taby = new Taby(tabsDefinition, '.append-to-element');
-	*
-	*	// > taby sould generate this(see below) code
-	*
-	*	<div class="taby" data-tab>
-	*		<ul>
-	*			<li><a href="#tipp">Tipp</a></li>
-	*			<li><a href="#bewertungen">Bewertungen</a></li>
-	*			<li><a href="#informationen">Infomrationen
-	*				<ul>
-	*					<li><a href="#fahrzeug">Fahrzeug</a></li>
-	*					<li><a href="#station">Station</a></li>
-	*					<li><a href="#fahrzeug">Vermieter</a></li>
-	*				</ul>
-	*				</a>
-	*			</li>
-	*			<li data-taby-toggle-visibility class="show-hide-icon"></li>
-	*		</ul>
-	*	</div>
-	*
-	*	<div class="taby" data-tab-content>
-	*		<!-- Contentarea-->
-	*		<div class="tipp">
-	*			<h3><a name="tipp">Tips</a></h3>
-	*			<div class="content">
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*			</div>
-	*		</div>
-	*
-	*		<!-- Contentarea-->
-	*		<div class="bewertungen">
-	*			<h3><a name="bewertungen">Bewertungsübersicht</a></h3>
-	*			<div class="content">
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*			</div>
-	*		</div>
-	*
-	*		<!-- Contentarea-->
-	*		<div class="informationen">
-	*
-	*			<h3><a name="informationen">Fahrzeug</a></h3>
-	*			<div class="content">
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*			</div>
-	*
-	*			<h3>Station</h3>
-	*			<div class="content">
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*			</div>
-	*
-	*			<h3>Vermieter</h3>
-	*			<div class="content">
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*				Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-	*			</div>
-	*		</div>
-	*	</div>
-	*
-	*/
-
 	// > feature detecting
 	var _feature = {
 		querySelectorAll : !!document.querySelectorAll,
@@ -290,6 +151,7 @@ var Taby = (function(document, window, undefined){
 		context = this;
 
 		// > core elements
+		this.tabNamespaces    = '.taby';
 		this.tab              = '.taby[data-tab]';
 		this.tabContent       = '.taby[data-tab-content]';
 		this.$tabyFixedEl     = {};
@@ -347,52 +209,112 @@ var Taby = (function(document, window, undefined){
 		},
 		setEvents : function(){
 
-			$(this.tab + ' ul')[0].addEventListener('click', function(e){
+			var event = {};
+				event.preventDefault=function(){};
 
-				// >>> *****************************
-				// >>> read operation
+			var $self = this,
+				$lastShowedTab=null,
+				callback = function(e){
 
-				var target = e.target,
-					tmpUlContainer = [], i= 0, length=0;
+					e.preventDefault();
 
-				if(e.target.nodeName.toLowerCase() === 'a'){
-					target = e.target.parentNode;
-				}
+					// >>> *****************************
+					// >>> read operation
 
-				var $thisChildTarget = target.querySelector('ul'),
-					$allTargets = $(context.tab + ' ul');
+					// >>> start event delegation auslagern
+					var target = e.target,
+						$thisAElement = {},
+						tmpUlContainer = [], i= 0, length=0;
 
-				if($thisChildTarget===null) {
-					$thisChildTarget = target;
-				} else {
-					tmpUlContainer.push($thisChildTarget);
-				}
-
-				var parentClassName='';
-
-				while(parentClassName!=='taby'){
-					var $parentNode = $thisChildTarget.parentNode;
-					if($parentNode.nodeName.toLowerCase()==='ul'){
-						tmpUlContainer.push($parentNode);
+					if(e.target.nodeName.toLowerCase() === 'a'){
+						$thisAElement = e.target;
+						target = e.target.parentNode;
+					} else {
+						$thisAElement = e.target.children[0];
 					}
-					$thisChildTarget = $parentNode;
-					parentClassName = $parentNode.className;
-				}
+					// >>> ende delegation auslagern
 
-				// >>> *****************************
-				// >>> write operation
+					var $thisChildTarget = target.querySelector('ul'),
+						$allTargets      = $(context.tab + ' ul');
 
-				// > alle ul´s ausblenden
-				for(i= 0, length=$allTargets.length; i<length;i++){
-					$allTargets[i].removeClass('show');
-				}
+					// > wenn kein ul, dann akuellen li auf
+					//   $thisChildTarget setzen, damit
+					//   aus dieser das parent ul ermittelt werden kann
+					if($thisChildTarget===null) {
+						$thisChildTarget = target;
+					} else {
+						tmpUlContainer.push($thisChildTarget);
+					}
 
-				// > alle ul´s anzeigen die angezeigt werden sollen
-				for(i=0, length=tmpUlContainer.length;i<length;i++){
-					tmpUlContainer[i].addClass('show');
-				}
+					// >>> start closest auslagern
+					var parentClassName='';
+					while(parentClassName!=='taby'){
+						var $parentNode = $thisChildTarget.parentNode;
+						if($parentNode.nodeName.toLowerCase()==='ul'){
+							tmpUlContainer.push($parentNode);
+						}
+						$thisChildTarget = $parentNode;
+						parentClassName = $parentNode.className;
+					}
+					// >>> end closest auslagern
 
-			});
+					// >>> *****************************
+					// >>> write operation
+
+					// > alle ul´s ausblenden
+					for(i= 0, length=$allTargets.length; i<length;i++){
+						$allTargets[i].removeClass('show');
+					}
+
+					// > alle ul´s anzeigen die angezeigt werden sollen
+					for(i=0, length=tmpUlContainer.length;i<length;i++){
+						tmpUlContainer[i].addClass('show');
+					}
+
+					// >>> *****************************
+					// >>> set height of tab wrapper
+
+					var maxHeightOfTab    = 0,
+						$visibleListLayer = $($self.tab + ' ul.show > li:first-child');
+
+					for(i=0, length=$visibleListLayer.length;i<length;i++){
+						maxHeightOfTab += $visibleListLayer[i].clientHeight;
+
+					}
+					$($self.tab)[0].style.height = maxHeightOfTab+'px';
+
+					// >>> *****************************
+					// >>> handle content visibilty
+
+					var ankerTarget = '', $children,
+						nodeName    = $thisAElement.nodeName.toLowerCase();
+
+					if($lastShowedTab !== null){
+						$lastShowedTab.addClass('hidden');
+					}
+
+					// > wenn <a>tag inhalt anzeigen
+					if(nodeName==='a'){
+						ankerTarget = $thisAElement.getAttribute('href').replace('#','');
+						$lastShowedTab = $($self.tabNamespaces+'[data-tab-content="'+ankerTarget+'"]')[0];
+						$lastShowedTab.removeClass('hidden');
+						// > wenn <ul> dann innerhalb ul erstes li anzeigen wenn es nicht nested ist
+					} else {
+						$children = $thisAElement.children;
+						for(i= 0, length=$children.length; i<length;i++){
+							event.target=$children[i];
+							callback.call(null, event); break;
+						}
+					}
+
+				};
+
+			// >>> first self call
+			event.target=$(this.tab + ' > ul > li')[0];
+			callback.call(null, event);
+
+			// >>> eventHandler registrieren
+			$(this.tab + ' ul')[0].addEventListener('click', callback);
 		}
 
 	};

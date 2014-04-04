@@ -2,6 +2,10 @@
 	max-width : 600px;
 	margin : 5% auto 0 auto;
 }
+.content-wrapper {
+	max-width: 600px;
+	margin: 0 auto;
+}
 html * {
 	@include box-sizing(border-box);
 }
@@ -13,7 +17,10 @@ $tab-height  : 45px;
 
 .taby[data-tab]{
 
+	font-size: 14px;
+
 	ul {
+
 		position:relative;
 
 		ul {
@@ -33,7 +40,7 @@ $tab-height  : 45px;
 			height: $tab-height;
 			text-align : center; // diesen Wert ueber plugin selber setzten koennen
 			padding: $tab-padding;
-			border: 1px solid red;
+			border: 1px solid darkblue;
 			float:left;
 			z-index: 1;
 		}
@@ -48,7 +55,7 @@ $tab-height  : 45px;
 
 			//debug attributes
 			background-color: blue;
-			opacity: 0.5;
+
 		}
 
 		ul { display:none; padding:0; list-style-type:none; margin:0;}

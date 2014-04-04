@@ -5,13 +5,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2, user-scalable=yes">
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
         <link rel="stylesheet" type="text/css" href="taby.css" />
         <script src="vendor/js/ready.js"></script>
         <script src="taby.js"></script>
         <script>
             domready(function () {
-                var taby = new Taby();
+                var render         = '',
+                    tmpHTMLFixture = '',
+                    HTMLFixture    =
+                        '<div class="taby hidden" data-tab-content="%int%">'+
+                            '<h3><a name="%int%">%int%</a></h3>'+
+                             '<div class="content">'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                                'Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.'+
+                            '</div>'+
+                        '</div>';
+
+                    for(var i=1;i<=29;i++){
+                        render += HTMLFixture.replace(/%int%/g, i);
+                    }
+
+                    document.querySelector('.content-wrapper').innerHTML = render;
+
+                    // >>> start taby
+                    var taby = new Taby();
+
             });
         </script>
     </head>
@@ -20,136 +48,70 @@
             <!-- Tabs -->
             <div class="taby" data-tab>
                 <ul>
-                    <li><a href="#Infomrationen">Infomrationen</a>
+                    <li>1 [x]
                         <ul>
-                            <li><a href="#fahrzeug">Fahrzeug</a></li>
-                            <li><a href="#fahrzeug">Fahrzeug</a>
+                            <li><a href="#2">2</a></li>
+                            <li>3 [x]
                                 <ul>
-                                    <li><a href="#fahrzeug">Foo 1</a></li>
-                                    <li><a href="#station">Foo 2</a>
+                                    <li><a href="#4">4</a></li>
+                                    <li>5 [x]
                                         <ul>
-                                            <li><a href="#fahrzeug">Foo 1</a></li>
-                                            <li><a href="#station">Foo 2</a></li>
-                                            <li><a href="#fahrzeug">Foo 1</a></li>
-                                            <li><a href="#station">Foo 2</a></li>
+                                            <li><a taby="open" href="#6">6</a></li>
+                                            <li><a href="#7">7</a></li>
+                                            <li><a href="#8">8</a></li>
+                                            <li><a href="#9">9</a></li>
                                         </ul>
                                     </li>
                                 </ul>
                             </li>
-                            <li><a href="#fahrzeug">Foo</a></li>
-                            <li><a href="#station">Station</a>
+                            <li><a href="#10">10</a></li>
+                            <li>11 [x]
                                 <ul>
-                                    <li><a href="#fahrzeug">Foo 1</a></li>
-                                    <li><a href="#station">Foo 2</a>
+                                    <li><a href="#12">12</a></li>
+                                    <li>13 [x]
                                         <ul>
-                                            <li><a href="#fahrzeug">Foo 1</a></li>
-                                            <li><a href="#station">Foo 2</a></li>
-                                            <li><a href="#fahrzeug">Foo 1</a></li>
-                                            <li><a href="#station">Foo 2</a></li>
+                                            <li><a href="#14">14</a></li>
+                                            <li><a href="#15">15</a></li>
+                                            <li><a href="#14">14</a></li>
+                                            <li><a href="#15">15</a></li>
                                         </ul>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
                     </li>
-                    <li><a href="#bewertungen">Doon</a>
-                    <li><a href="#station">Station</a>
+                    <li><a href="#16">16</a></li>
+                    <li>17 [x]
                         <ul>
-                            <li><a href="#fahrzeug">Foo 1</a></li>
-                            <li><a href="#station">Foo 2</a>
+                            <li>19 [x]
                                 <ul>
-                                    <li><a href="#fahrzeug">Foo 1</a></li>
-                                    <li><a href="#station">Foo 2</a></li>
-                                    <li><a href="#fahrzeug">Foo 1</a></li>
-                                    <li><a href="#station">Foo here</a>
+                                    <li><a href="#20">20</a></li>
+                                    <li><a href="#21">21</a></li>
+                                    <li><a href="#22">22</a></li>
+                                    <li>23 [x]
                                         <ul>
-                                            <li><a href="#fahrzeug">Foo hhh</a></li>
-                                            <li><a href="#station">Foo here</a>
+                                            <li><a href="#24">24</a></li>
+                                            <li>25 [x]
                                                 <ul>
-                                                    <li><a href="#fahrzeug">Foo xxx</a></li>
-                                                    <li><a href="#station">Foo ddd</a></li>
-                                                    <li><a href="#fahrzeug">Foo hhh</a></li>
+                                                    <li><a href="#26">26</a></li>
+                                                    <li><a href="#27">27</a></li>
+                                                    <li><a href="#28">28</a></li>
                                                 </ul>
                                             </li>
                                         </ul>
                                     </li>
                                 </ul>
                             </li>
+                            <li><a href="#18">18</a></li>
                         </ul>
                     </li>
-                    </li>
-                    <li><a href="#tipp">Tipp</a></li>
+                    <li><a href="#29">29</a></li>
                     <li data-taby-toggle-visibility data-taby-fixed-size class="show-hide-icon"></li>
                 </ul>
             </div>
-            <div style="clear:both;"></div><!-- dynamisch anhängen -->
-            <!-- Tabs Content -->
-            <div class="taby hidden" data-tab-content="tipp">
-                <h3><a name="tipp">Tips</a></h3>
-                <div class="content">
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                </div>
-            </div>
-            <div class="taby hidden" data-tab-content="bewertung">
-                <h3><a name="bewertungen">Bewertung</a></h3>
-                <div class="content">
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                </div>
-            </div>
-            <div class="taby hidden" data-tab-content="informationen">
-                <h3><a name="informationen">Informationen</a></h3>
-                <div class="content">
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                </div>
-            </div>
-            <div class="taby hidden" data-tab-content="fahrzeug">
-                <h3><a name="fahrzeug">Fahrzeug</a></h3>
-                <div class="content">
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                </div>
-            </div>
-            <div class="taby hidden" data-tab-content="stationen">
-                <h3><a name="stationen">Tips</a></h3>
-                <div class="content">
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                </div>
-            </div>
-            <div class="taby hidden" data-tab-content="vermieter">
-                <h3><a name="vermieter">Tips</a></h3>
-                <div class="content">
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba. Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                    Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.Lorum Ipsum Cipsum Hipsum. Dada du huhu ba.
-                </div>
-            </div>
+        </div>
+        <div class="content-wrapper" style="clear:both;">
+            <!-- content -->
         </div>
     </body>
 </html>
