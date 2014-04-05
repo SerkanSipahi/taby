@@ -1,13 +1,13 @@
 var Taby = (function(document, window, undefined){
 
-	'use strict';
+    'use strict';
 
-	// > feature detecting
+    // > feature detecting
 
-	var tmpElement = document.createElement('div'),
+    var tmpElement = document.createElement('div'),
         _feature = {
-        classList : !!('classList' in tmpElement)
-	};
+            classList : !!('classList' in tmpElement)
+        };
     // >>> Helper Methods
     Array.prototype.$each = function(callback){
 
@@ -67,9 +67,6 @@ var Taby = (function(document, window, undefined){
         if(_feature.classList){
             console.log(result);
         }
-    };
-    Element.prototype.$until = function(){
-
     };
     Element.prototype.$getAllClosestClass = function(parentElement,  upToEndElement){
         /*
