@@ -69,6 +69,11 @@ module.exports = function(grunt) {
 				'taby.min.js'
 			]
 		},
+        karma: {
+            unit: {
+                configFile: 'karma.conf.js'
+            }
+        },
 		watch: {
 			js : {
 				files: watch_files,
@@ -98,6 +103,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-sass');
 
 	grunt.registerTask('default', ['jshint', 'sass', 'watch']);
+    grunt.registerTask('tests', ['karma']);
 
 	grunt.registerTask('bower', [
 		'clean:bower',

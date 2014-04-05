@@ -1,8 +1,10 @@
 .sass-cache
 taby.css
+taby.min.css
+taby.min.js
 node_modules
 bower_components
 sass/bootstrap
 sass/bootstrap.scss
 vendor
-skeleton.css
+.idea/
