@@ -5,6 +5,13 @@ var Taby = (function(document, window, undefined){
     // > feature detecting
 
     var tmpElement = document.createElement('div'),
+        /* > we use Zepto or jQuery for some features
+         * which are not supported by other browser.
+         * mainly: from ie8 or ie9 !
+         * we recomended Conditional Comments for
+         * loading Zepto or jQuery on the fly !
+         */
+        $qs = window.Zepto || window.jQuery,
         _feature = {
             classList : !!('classList' in tmpElement)
         };
@@ -23,15 +30,7 @@ var Taby = (function(document, window, undefined){
         if(_feature.classList){
             this.classList.add(classname);
         } else {
-            var tmpContainer = [];
-            tmpContainer = this.className.split(' ');
-            for(var i= 0, length=tmpContainer.length;i<length; i++){
-                if(tmpContainer[i].replace(' ', '')===classname){
-                    return;
-                }
-            }
-            tmpContainer.push(classname);
-            this.className = tmpContainer.join(' ');
+            $qs(this).addClass('classname');
         }
         return this;
     };
@@ -40,9 +39,7 @@ var Taby = (function(document, window, undefined){
         if(_feature.classList){
             this.classList.remove(classname);
         } else {
-            // > mit replace zu unsicher weil wenn xxx entfernd werden soll
-            // aber xxx-auch dort, wird das auch erstezt
-            this.className = this.className.replace(classname, '');
+            $qs(this).removeClass('classname');
         }
         return this;
     };
@@ -53,9 +50,10 @@ var Taby = (function(document, window, undefined){
         if(_feature.classList){
             res = this.classList.contains(classname);
         } else {
-            var pattern =  new RegExp(classname);
-            if(pattern.test(classname)){
+            if($qs(this).hasClass(classname)){
                 res = true;
+            } else {
+                res = false;
             }
         }
         return res;
@@ -69,9 +67,6 @@ var Taby = (function(document, window, undefined){
     Element.prototype.$closest = function(expression){
 
         var $this            = this,
-            parentElCount    = 0,
-            untilElCount     = 0,
-            $parentNode      = {},
             result           = $regex_until.exec(expression),
             allElements      = result[1] === '*' ? true : false,
             closestElement   = result[2],
@@ -154,7 +149,7 @@ var Taby = (function(document, window, undefined){
         this.tabNamespaces    = '.taby';
         this.tab              = '.taby[data-tab]';
         this.tabContent       = '.taby[data-tab-content]';
-        this.tabLockEl        = '.taby-lock',
+        this.tabLockEl        = '.taby-lock';
         this.$tabyFixedEl     = {};
         this.$tabs            = {};
         this.tabsLength       = 0;
