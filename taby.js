@@ -27,6 +27,8 @@ var Taby = (function(document, window, undefined){
     };
     Element.prototype.$addClass = function(classname){
 
+        if(!classname) { return false; }
+
         if(_feature.classList){
             this.classList.add(classname);
         } else {
@@ -36,6 +38,8 @@ var Taby = (function(document, window, undefined){
     };
     Element.prototype.$removeClass = function(classname){
 
+        if(!classname) { return false; }
+
         if(_feature.classList){
             this.classList.remove(classname);
         } else {
@@ -43,7 +47,9 @@ var Taby = (function(document, window, undefined){
         }
         return this;
     };
-    Element.prototype.$hasClass = function(){
+    Element.prototype.$hasClass = function(classname){
+
+        if(!classname) { return false; }
 
         var res = false;
 
