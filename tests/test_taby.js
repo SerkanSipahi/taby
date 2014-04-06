@@ -4,7 +4,7 @@ describe('Testing DomElement Helpers Methods...', function() {
 
     describe('Testing pattern for domNode.$closest - allPattern', function(){
 
-        var allPattern   = /^(\*)?(.*?)(:until\((.*?)\))?$/;
+        var allPattern     = /^(\*)?(.*?)(:until\((.*?)\))?$/;
 
         it('Test: *li:until(.taby)', function() {
             var element = allPattern.exec('*li:until(.taby)');
@@ -35,10 +35,10 @@ describe('Testing DomElement Helpers Methods...', function() {
             expect(element).toContain('#root');
         });
         it('Test: *li[data-foo="true"].class:until(.somclass)', function() {
-            var element = allPattern.exec('*li[data-foo="true"].class:until(.somclass)');
+            var element = allPattern.exec('*li[data-foo="true"].class:until(.someclass)');
             expect(element).toContain('*');
             expect(element).toContain('li[data-foo="true"].class');
-            expect(element).toContain('.somclass');
+            expect(element).toContain('.someclass');
         });
 
         /*
@@ -65,7 +65,8 @@ describe('Testing DomElement Helpers Methods...', function() {
             expect(element[2]).toBe('li[data-foo="true"].class');
             expect(element[4]).not.toBeDefined();
         });
-        console.log(document.querySelectorAll('.taby'));
+
+
     });
 
 });

@@ -61,57 +61,82 @@ var Taby = (function(document, window, undefined){
         return res;
 
     };
+
+    window.$regex_until = /^(\*)?(.*?)(:until\((.*?)\))?$/;
+    window.$regex_element = /^(?:(#|\.|[^_])*?([\w-]*?))$/;
+    window.$regex_$elAttributs = /(?:\[(.*?)(?:=*?(?:"(.*?)")*?)\])/;
+
     Element.prototype.$closest = function(expression){
 
-        /*
-         * @expression string
-         * dokumentieren....
-         */
-
-        var $this         = this,
-            pattern       = /^(\*)?(.*?)(:until\((.*?)\))?$/,
-            result        = pattern.exec(expression),
-            allElements   = result[1] || null,
-            parentElement = result[2] || null,
-            untilElement  = result[4] || null;
+        var $this            = this,
+            parentElCount    = 0,
+            untilElCount     = 0,
+            $parentNode      = {},
+            result           = $regex_until.exec(expression),
+            allElements      = result[1] === '*' ? true : false,
+            closestElement   = result[2],
+            untilElement     = result[4] || 'body',
+            untilLoop        = false,
+            closestContainer = [];
 
         if(_feature.classList){
-            console.log(result);
-        }
-    };
-    Element.prototype.$getAllClosestClass = function(parentElement,  upToEndElement){
-        /*
-         * $target.closest('*li:until(.taby)');
-         * todo: @target kann ein domNode oder ein Element, Id, Class oder ein mix aus allen sein !
-         * todo; @parentElement kann ein Element, Id, Class oder ein mix aus allen drei sein !
-         * todo: @upToEndElement kann ein Element, ID, Class oder ein mix aus allen drei sein !
-         */
 
-        var parentClassName='',
-            tmpContainer =[],
-            pattern=new RegExp(upToEndElement),
-            target=null;
+            var $currentElement = void(0),
+                closestRes = $regex_element.exec(closestElement),
+                untilRes   = $regex_element.exec(untilElement);
+                closestContainer.push($this);
 
-        target=this;
-        tmpContainer.push(target);
+            while(untilLoop === false){
 
-        /*
-         * das matchen über !pattern.test(parentClassName) ist zu unsicher!
-         * in diesem Fall soll bis class taby die while schleife laufen ! aber
-         * bis zu seinem weg sind li tags mit taby-active vorhanden, diese können
-         * auch gemachted werden. Also genauere Prüfung
-         **/
-        while(!pattern.test(parentClassName)){
-            var $parentNode = target.parentNode;
-            if($parentNode.nodeName.toLowerCase()===parentElement){
-                tmpContainer.push($parentNode);
+                $currentElement = $currentElement === void(0) ? $this.parentNode : $currentElement.parentNode;
+
+                //********************* until ***********************
+
+                // > if element
+                if(untilRes[1]===void(0)){
+                    if($currentElement.localName === untilRes[2]){
+                        untilLoop = true;
+                    }
+                    // > if class
+                } else if(untilRes[1]==='.'){
+                    if($currentElement.classList.contains(untilRes[2])){
+                        untilLoop = true;
+                    }
+                    // > if id
+                } else if(untilRes[1]==='#') {
+                    if($currentElement.id === untilRes[2]){
+                        untilLoop = true;
+                    }
+                }
+
+                //******************** closest **********************
+
+                // > if element
+                if(closestRes[1]===void(0)){
+                    if($currentElement.localName === closestRes[2]){
+                        closestContainer.push($currentElement);
+                    }
+                // > if class
+                } else if(closestRes[1]==='.'){
+                    if($currentElement.classList.contains(closestRes[2])){
+                        closestContainer.push($currentElement);
+                    }
+                // > if id
+                } else if(closestRes[1]==='#') {
+                    if($currentElement.id === closestRes[2]){
+                        closestContainer.push($currentElement);
+                    }
+                }
+
+                if(!allElements){ break; }
+
             }
-            target = $parentNode;
-            parentClassName = $parentNode.className;
 
+        } else {
+            // >>> fallback mit jquery aus entsprechenden ordner laden und hier ausführen
         }
 
-        return tmpContainer;
+        return closestContainer;
     };
 
     // >>> bind querySelectorAll to $
@@ -190,10 +215,7 @@ var Taby = (function(document, window, undefined){
                     this.lastActiveTabs[i].$removeClass('taby-active');
                 }
             }
-            // >>> $target.getAllClosest('li').until('.taby');
-            // >>> $target.closest('*li:until(.taby)');
-            $target.$closest('*li:until(.taby)');
-            this.lastActiveTabs = $target.$getAllClosestClass('li', 'taby');
+            this.lastActiveTabs = $target.$closest('*li:until(.taby)');
 
             for(i=0, length=this.lastActiveTabs.length;i<length;i++){
                 this.lastActiveTabs[i].$addClass('taby-active');
@@ -245,23 +267,9 @@ var Taby = (function(document, window, undefined){
                     //   aus dieser das parent ul ermittelt werden kann
                     if($thisChildTarget===null) {
                         $thisChildTarget = target;
-                    } else {
-                        tmpUlContainer.push($thisChildTarget);
                     }
 
-                    // >>> start closest auslagern
-                    var parentClassName='';
-                    while(!/^taby$/.test(parentClassName)){
-                        var $parentNode = $thisChildTarget.parentNode;
-                        if($parentNode.nodeName.toLowerCase()==='ul'){
-                            tmpUlContainer.push($parentNode);
-                        }
-                        $thisChildTarget = $parentNode;
-                        parentClassName = $parentNode.className.replace(' ', '');
-
-                    }
-                    // >>> end closest auslagern
-
+                    tmpUlContainer = $thisChildTarget.$closest('*ul:until(.taby)');
                     // >>> *****************************
                     // >>> write operation
 
@@ -317,6 +325,7 @@ var Taby = (function(document, window, undefined){
 
             // >>> first self call
             event.target=$(this.tab + ' ul li')[0];
+            //event.target=$(this.tab + ' ul li')[25];
             callback.call(null, event);
 
             // >>> handle tabs handler
