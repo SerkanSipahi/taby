@@ -2,6 +2,9 @@ var Taby = (function(document, window, undefined){
 
     'use strict';
 
+    //@todo: addEventlistern = jQuery/Zepto.on <<<-- mapping
+    //@todo: http://www.polymer-project.org/ / or as shadowdom
+
     // > feature detecting
 
     var tmpElement = document.createElement('div'),
@@ -67,10 +70,12 @@ var Taby = (function(document, window, undefined){
     };
 
     window.$regex_until = /^(\*)?(.*?)(:until\((.*?)\))?$/;
-    window.$regex_element = /^(?:(#|\.|[^_])*?([\w-]*?))$/;
+    window.$regex_element = /^(?:(#|\.)*?([\w-]*?))$/;
     window.$regex_$elAttributs = /(?:\[(.*?)(?:=*?(?:"(.*?)")*?)\])/;
 
     Element.prototype.$closest = function(expression){
+
+        //@todo: allElements is not finished!
 
         var $this            = this,
             result           = $regex_until.exec(expression),
