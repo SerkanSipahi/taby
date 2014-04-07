@@ -19,9 +19,6 @@ var Taby = (function(document, window, undefined){
     Array.prototype.$each = function(callback){
 
     };
-    Object.prototype.$each = function(callback){
-
-    };
     String.prototype.$each = function(callback){
 
     };
