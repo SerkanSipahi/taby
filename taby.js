@@ -83,73 +83,49 @@ var Taby = (function(document, window, undefined){
         if(_feature.classList){
 
             var $currentElement = void(0),
-                closestRes = $regex_element.exec(closestElement),
-                untilRes   = $regex_element.exec(untilElement);
-                closestContainer.push($this);
+				oElement  = null,
+				oElements = {
+					closest : $regex_element.exec(closestElement),
+					until   : $regex_element.exec(untilElement)
+				};
 
+            closestContainer.push($this);
             while(untilLoop === false){
 
                 $currentElement = $currentElement === void(0) ? $this.parentNode : $currentElement.parentNode;
 
-                //********************* until ***********************
-
-                // > if element
-                if(untilRes[1]===void(0)){
-                    if($currentElement.localName === untilRes[2]){
-                        untilLoop = true;
-                    }
-                    // > if class
-                } else if(untilRes[1]==='.'){
-                    if($currentElement.classList.contains(untilRes[2])){
-                        untilLoop = true;
-                    }
-                    // > if id
-                } else if(untilRes[1]==='#') {
-                    if($currentElement.id === untilRes[2]){
-                        untilLoop = true;
-                    }
-                }
-
-                //******************** closest **********************
-
-                // > if element
-                if(closestRes[1]===void(0)){
-                    if($currentElement.localName === closestRes[2]){
-                        closestContainer.push($currentElement);
-                    }
-                // > if class
-                } else if(closestRes[1]==='.'){
-                    if($currentElement.classList.contains(closestRes[2])){
-                        closestContainer.push($currentElement);
-                    }
-                // > if id
-                } else if(closestRes[1]==='#') {
-                    if($currentElement.id === closestRes[2]){
-                        closestContainer.push($currentElement);
-                    }
-                }
-
+				for(oElement in oElements){
+					// > if element
+					if(oElements[oElement][1]===void(0)){
+						if($currentElement.localName === oElements[oElement][2]){
+							oElement === 'until' ? untilLoop = true : closestContainer.push($currentElement);
+						}
+					// > if class
+					} else if(oElements[oElement][1]==='.'){
+						if($currentElement.classList.contains(oElements[oElement][2])){
+							oElement === 'until' ? untilLoop = true : closestContainer.push($currentElement);
+						}
+					// > if id
+					} else if(oElements[oElement][1]==='#') {
+						if($currentElement.id === oElements[oElement]){
+							oElement === 'until' ? untilLoop = true : closestContainer.push($currentElement);
+						}
+					}
+				}
                 if(!allElements){ break; }
-
             }
 
         } else {
-            // >>> fallback mit jquery aus entsprechenden ordner laden und hier ausführen
+			closestContainer = $qs($this).closest(expression);
         }
 
         return closestContainer;
     };
 
     // >>> bind querySelectorAll to $
-    var $ = document.querySelectorAll.bind(document);
+    var $ = document.querySelectorAll.bind(document),
 
-    // > context
-    var thisTaby = {};
-
-    // > Constructor
-    function Taby(){
-
-        thisTaby = this;
+	Taby = function(){
 
         // > core elements
         this.tabNamespaces    = '.taby';
@@ -171,7 +147,7 @@ var Taby = (function(document, window, undefined){
 
         // > init taby
         this.initTaby();
-    }
+    };
 
     // > public methods
     Taby.prototype = {
@@ -179,6 +155,7 @@ var Taby = (function(document, window, undefined){
             this.calculateTabSizes();
             this.setEvents();
         },
+		//@todo: we need this mthod for IE8,9,10 ! Other Browser can use Flexbox
         calculateTabSizes : function(){
 
             var i = 0, d = 0, $children = {}, $childrenLength;
@@ -238,7 +215,7 @@ var Taby = (function(document, window, undefined){
                     // >>> *****************************
                     // >>> read operation
 
-                    // >>> start event delegation auslagern
+                    // >>> start event delegation auslagern nach addeventlistener
                     var target = e.target,
                         $thisAElement = {},
                         tmpUlContainer = [], i= 0, length=0;
@@ -261,7 +238,7 @@ var Taby = (function(document, window, undefined){
                     // >>> ende delegation auslagern
 
                     var $thisChildTarget = target.querySelector('ul'),
-                        $allTargets      = $(thisTaby.tab + ' ul');
+                        $allTargets      = $($self.tab + ' ul');
 
                     // > wenn kein ul, dann akuellen li auf
                     //   $thisChildTarget setzen, damit
