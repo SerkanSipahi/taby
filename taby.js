@@ -127,13 +127,18 @@ var Taby = (function(document, window, undefined){
     // >>> bind querySelectorAll to $
     var $ = document.querySelectorAll.bind(document),
 
-	Taby = function(){
+	Taby = function(dest){
+
+		if($(dest+'[data-tab]')[0].getAttribute('data-tab-initialized')==='true'){
+			return;
+		}
 
         // > core elements
-        this.tabNamespaces    = '.taby';
-        this.tab              = '.taby[data-tab]';
-        this.tabContent       = '.taby[data-tab-content]';
-        this.tabLockEl        = '.taby-lock';
+        this.dest             = dest;
+		this.tabNamespaces    = dest;
+        this.tab              = dest+'[data-tab]';
+        this.tabContent       = dest+'[data-tab-content]';
+        this.tabLockEl        = dest+' .taby-lock';
         this.$tabyFixedEl     = {};
         this.$tabs            = {};
         this.tabsLength       = 0;
@@ -149,6 +154,7 @@ var Taby = (function(document, window, undefined){
 
         // > init taby
         this.initTaby();
+
     };
 
     // > public methods
@@ -156,6 +162,7 @@ var Taby = (function(document, window, undefined){
         initTaby : function(){
             this.calculateTabSizes();
             this.setEvents();
+
         },
 		//@todo: we need this mthod for IE8,9,10 ! Other Browser can use Flexbox
         calculateTabSizes : function(){
@@ -207,6 +214,9 @@ var Taby = (function(document, window, undefined){
 
             var event = {};
                 event.preventDefault=function(){};
+
+			// >>> set initialized default tag
+			$(this.dest)[0].setAttribute('data-tab-initialized', false);
 
             var $self = this,
                 $lastShowedTab=null,
@@ -326,6 +336,9 @@ var Taby = (function(document, window, undefined){
                     }
                 });
             }
+
+			// >>> set initialized tag
+			$(this.dest)[0].setAttribute('data-tab-initialized', true);
 
         }
 
