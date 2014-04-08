@@ -298,7 +298,7 @@ var Taby = (function(document, window, undefined){
                     // > wenn <a>tag inhalt anzeigen
                     if(nodeName==='a'){
                         ankerTarget = $thisAElement.getAttribute('href').replace('#','');
-                        $lastShowedTab = $($self.tabNamespaces+'[data-tab-content="'+ankerTarget+'"]')[0];
+                        $lastShowedTab = $($self.tabNamespaces.replace('[data-tab]','')+'[data-tab-content="'+ankerTarget+'"]')[0];
                         $lastShowedTab.$removeClass('hidden');
                         // > wenn <ul> dann innerhalb ul erstes li anzeigen wenn es nicht nested ist
                     } else {
