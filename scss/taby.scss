@@ -7,6 +7,11 @@
 	margin: 0 auto;
 }
 html * {
+	@mixin box-sizing($boxmodel) {
+		-webkit-box-sizing: $boxmodel;
+		-moz-box-sizing: $boxmodel;
+		box-sizing: $boxmodel;
+	}
 	@include box-sizing(border-box);
 }
 body {
