@@ -18,13 +18,28 @@ var Taby = (function(document, window, undefined){
         _feature = {
             classList : !!('classList' in tmpElement)
         };
-    // >>> Helper Methods
-    Array.prototype.$each = function(callback){
 
-    };
-    String.prototype.$each = function(callback){
+    Window.prototype._$forLoop = function(callback){
 
+        if (this === void 0 || this === null) { throw new TypeError(); }
+
+        var t = Object(this),
+            len = t.length >>> 0;
+        if (typeof callback !== 'function') { throw new TypeError(); }
+
+        for (var i = 0; i < len; i++){
+            if (i in t){
+                callback.call(t[i], i, t[i]);
+            }
+        }
     };
+    Array.prototype.$each =
+    NodeList.prototype.$each =
+    HTMLCollection.prototype.$each = function(callback){
+        Window.prototype._$forLoop.call(this, callback);
+    };
+
+    // >>> $addClass
     Element.prototype.$addClass = function(classname){
 
         if(!classname) { return false; }
@@ -36,6 +51,16 @@ var Taby = (function(document, window, undefined){
         }
         return this;
     };
+    Array.prototype.$addClass =
+    NodeList.prototype.$addClass =
+    HTMLCollection.prototype.$addClass = function(classname){
+        this.$each(function(){
+            this.$addClass(classname);
+        });
+    };
+    /////////////////////////////////////////////
+
+    // >>> $removeClass
     Element.prototype.$removeClass = function(classname){
 
         if(!classname) { return false; }
@@ -47,6 +72,16 @@ var Taby = (function(document, window, undefined){
         }
         return this;
     };
+    Array.prototype.$removeClass =
+    NodeList.prototype.$removeClass =
+    HTMLCollection.prototype.$removeClass = function(classname){
+        this.$each(function(){
+            this.$removeClass(classname);
+        });
+    };
+    /////////////////////////////////////////////
+
+    // >>> $hasClass
     Element.prototype.$hasClass = function(classname){
 
         if(!classname) { return false; }
@@ -132,7 +167,6 @@ var Taby = (function(document, window, undefined){
         this.dest             = dest;
 
 		this.tmpDest          = null;
-		this.$childList       = null;
 
         this.$tabyFixedEl     = {};
 		this.$tabs            = [];
@@ -179,57 +213,46 @@ var Taby = (function(document, window, undefined){
 		//@todo: we need this mthod for IE8,9,10 ! Other Browser can use Flexbox
         calculateTabSizes : function(){
 
-            var i = 0, d = 0;
+            var self=this;
 
-			this.$childList = this.tmpDest.children[0].children;
-
-
-			for(var x = 0, length=this.$childList.length; x<length; x++){
-				if(this.$childList[x].$hasClass('taby-lock')){
-					this.$tabyFixedEl = this.$childList[x];
-				} else {
-					this.$tabs.push(this.$childList[x]);
-				}
-			}
+            var $childList = this.tmpDest.children[0].children;
+            $childList.$each(function(){
+                if(this.$hasClass('taby-lock')){
+                    self.$tabyFixedEl = this;
+                } else {
+                    self.$tabs.push(this);
+                }
+            });
 
             this.tabsLength   = this.$tabs.length;
             this.tabWidth     = (this.$tabyFixedEl instanceof Element ? this.absoluteWith : 100) / this.tabsLength;
 
             //first level
-            for(i=0;i<this.tabsLength;i++){
-                this.$tabs[i].style.width = this.tabWidth+'%';
-            }
+            this.$tabs.$each(function(){
+                this.style.width = self.tabWidth+'%';
+            });
 
             //deeper levels
             this.$deeperTabs      = this.tmpDest.children[0].querySelectorAll('ul');
             this.deeperTabsLength = this.$deeperTabs.length;
 
+            this.$deeperTabs.$each(function(){
+                self.$children      = this.children;
+                self.childrenLength = self.$children.length;
+                self.tabWidth       = 100 / self.childrenLength;
 
-            for(i=0;i<this.deeperTabsLength; i++){
-                this.$children      = this.$deeperTabs[i].children;
-                this.childrenLength = this.$children.length;
-                this.tabWidth       = 100 / this.childrenLength;
-                for(d=0;d<this.childrenLength;d++){
-                    this.$children[d].style.width = this.tabWidth+'%';
-                }
-
-            }
+                self.$children.$each(function(){
+                    this.style.width = self.tabWidth+'%';
+                });
+            });
         },
-        handleActiveTabs : function($target, parentElement, addClass, upToElement){
-
-            var i, length;
+        handleActiveTabs : function($target){
 
             if(this.lastActiveTabs!== null){
-                for(i=0, length=this.lastActiveTabs.length;i<length;i++){
-                    this.lastActiveTabs[i].$removeClass('taby-active');
-                }
+                this.lastActiveTabs.$removeClass('taby-active');
             }
             this.lastActiveTabs = $target.$closest('*li:until(.taby)');
-
-            for(i=0, length=this.lastActiveTabs.length;i<length;i++){
-                this.lastActiveTabs[i].$addClass('taby-active');
-            }
-
+            this.lastActiveTabs.$addClass('taby-active');
 
         },
         setEvents : function(){
@@ -286,14 +309,10 @@ var Taby = (function(document, window, undefined){
                     // >>> write operation
 
                     // > alle ul´s ausblenden
-                    for(i= 0, length=$allTargets.length; i<length;i++){
-                        $allTargets[i].$removeClass('show');
-                    }
+                    $allTargets.$removeClass('show');
 
                     // > alle ul´s anzeigen die angezeigt werden sollen
-                    for(i=0, length=tmpUlContainer.length;i<length;i++){
-                        tmpUlContainer[i].$addClass('show');
-                    }
+                    tmpUlContainer.$addClass('show');
 
                     // >>> *****************************
                     // >>> set height of tab wrapper
@@ -301,10 +320,9 @@ var Taby = (function(document, window, undefined){
                     var maxHeightOfTab    = 0,
                         $visibleListLayer = $self.tmpDest.querySelectorAll('ul.show > li:first-child');
 
-                    for(i=0, length=$visibleListLayer.length;i<length;i++){
-                        maxHeightOfTab += $visibleListLayer[i].clientHeight;
-
-                    }
+                    $visibleListLayer.$each(function(){
+                        maxHeightOfTab += this.clientHeight;
+                    });
 					$self.tmpDest.style.height = maxHeightOfTab+'px';
 
                     // >>> *****************************
@@ -324,6 +342,7 @@ var Taby = (function(document, window, undefined){
                         $lastShowedTab.$removeClass('hidden');
                         // > wenn <ul> dann innerhalb ul erstes li anzeigen wenn es nicht nested ist
                     } else {
+
                         $children = $thisAElement.children;
                         for(i= 0, length=$children.length; i<length;i++){
                             event.target=$children[i];

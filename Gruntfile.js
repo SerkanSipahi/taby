@@ -45,7 +45,12 @@ module.exports = function(grunt) {
 				files: {
 					'vendor/js/ready.js': 'bower_components/domready/ready.js'
 				}
-			}
+			},
+            jquery : {
+                files : {
+                    'vendor/js/jquery.js' : 'bower_components/jquery/dist/jquery.js'
+                }
+            }
 		},
 		sass: {
 			dist: {

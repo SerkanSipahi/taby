@@ -1,13 +1,14 @@
 {
 	"name": "taby-bitcollage",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"homepage": "https://github.com/SerkanSipahi/taby",
 	"authors": [
 		"Serkan Sipahi <serkan.sipahi@yahoo.de>"
 	],
 	"main": "taby.js",
 	"devDependencies": {
-		"domready" : "0.3.0"
+		"domready" : "0.3.0",
+        "jquery" : "~1.11.0"
 	},
 	"dependencies" : {
 		"bootstrap-sass-official" : "~3.1.1"
