@@ -124,10 +124,7 @@ var Taby = (function(document, window, undefined){
         return closestContainer;
     };
 
-    // >>> bind querySelectorAll to $
-
-	Taby = function(dest){
-
+	function Taby(dest){
 
 		this.$ = document.querySelectorAll.bind(document);
 
@@ -165,7 +162,7 @@ var Taby = (function(document, window, undefined){
         // > init taby
         this.initTaby();
 
-    };
+    }
 
     // > public methods
     Taby.prototype = {
