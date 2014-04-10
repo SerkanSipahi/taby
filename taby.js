@@ -125,11 +125,12 @@ var Taby = (function(document, window, undefined){
     };
 
     // >>> bind querySelectorAll to $
-    var $ = document.querySelectorAll.bind(document),
 
 	Taby = function(dest){
 
-        // > core elements
+
+		this.$ = document.querySelectorAll.bind(document);
+
 		this.isDomNode        = dest instanceof Element ? true : false;
         this.dest             = dest;
 
@@ -151,7 +152,7 @@ var Taby = (function(document, window, undefined){
 
 
 		if(!this.isDomNode){
-			this.tmpDest = $(this.dest)[0];
+			this.tmpDest = this.$(this.dest)[0];
 		} else {
 			this.tmpDest = this.dest;
 		}
