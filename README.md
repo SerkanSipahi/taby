@@ -54,6 +54,15 @@
 	*		}
 	*	]
 	*
+	*	var tabsDefinition = [
+	*		'Tipps' : function(){...},
+    *		'Bewertung' : function(){var v = new Fahrzeugview(item); return v.render();},
+	*		'Informationen' : [
+    *			'Fahrzeug' : function(){var v = new Fahrzeugview(item); return v.render();},
+    *			'Vermieter' : function(){var v = new Viewmierteriew(item); return v.render();},
+    *			'Station' : function(){var v = new Viewmierteriew(item); return v.render();},
+	*		},
+	*	]
 	*	var taby = new Taby(tabsDefinition, '.append-to-element');
 	*
 	*	// > taby sould generate this(see below) code

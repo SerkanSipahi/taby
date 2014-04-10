@@ -129,20 +129,17 @@ var Taby = (function(document, window, undefined){
 
 	Taby = function(dest){
 
-		if($(dest+'[data-tab]')[0].getAttribute('data-tab-initialized')==='true'){
-			return;
-		}
-
         // > core elements
+		this.isDomNode        = dest instanceof Element ? true : false;
         this.dest             = dest;
-		this.tabNamespaces    = dest;
-        this.tab              = dest+'[data-tab]';
-        this.tabContent       = dest+'[data-tab-content]';
-        this.tabLockEl        = dest+' .taby-lock';
+
+		this.tmpDest          = null;
+		this.$childList       = null;
+
         this.$tabyFixedEl     = {};
-        this.$tabs            = {};
+		this.$tabs            = [];
+
         this.tabsLength       = 0;
-        this.tabWith          = 0;
         this.absoluteWith     = 95;
 
         this.$deeperTabs      = {};
@@ -152,6 +149,18 @@ var Taby = (function(document, window, undefined){
 
         this.lastActiveTabs   = null;
 
+
+		if(!this.isDomNode){
+			this.tmpDest = $(this.dest)[0];
+		} else {
+			this.tmpDest = this.dest;
+		}
+
+
+		if(this.tmpDest.getAttribute('data-tab-initialized')==='true'){
+			return;
+		}
+
         // > init taby
         this.initTaby();
 
@@ -159,6 +168,11 @@ var Taby = (function(document, window, undefined){
 
     // > public methods
     Taby.prototype = {
+		state : function(state){
+			if(state==='activeTabs'){
+
+			}
+		},
         initTaby : function(){
             this.calculateTabSizes();
             this.setEvents();
@@ -167,11 +181,21 @@ var Taby = (function(document, window, undefined){
 		//@todo: we need this mthod for IE8,9,10 ! Other Browser can use Flexbox
         calculateTabSizes : function(){
 
-            var i = 0, d = 0, $children = {}, $childrenLength;
-            this.$tabyFixedEl = $(this.tab+' > ul > li[data-taby-fixed-size]');
-            this.$tabs        = $(this.tab+' > ul > li:not([data-taby-fixed-size])');
+            var i = 0, d = 0;
+
+			this.$childList = this.tmpDest.children[0].children;
+
+
+			for(var x = 0, length=this.$childList.length; x<length; x++){
+				if(this.$childList[x].$hasClass('taby-lock')){
+					this.$tabyFixedEl = this.$childList[x];
+				} else {
+					this.$tabs.push(this.$childList[x]);
+				}
+			}
+
             this.tabsLength   = this.$tabs.length;
-            this.tabWidth     = (this.$tabyFixedEl.length === 1 ? this.absoluteWith : 100) / this.tabsLength;
+            this.tabWidth     = (this.$tabyFixedEl instanceof Element ? this.absoluteWith : 100) / this.tabsLength;
 
             //first level
             for(i=0;i<this.tabsLength;i++){
@@ -179,7 +203,7 @@ var Taby = (function(document, window, undefined){
             }
 
             //deeper levels
-            this.$deeperTabs      = $(this.tab+' > ul ul');
+            this.$deeperTabs      = this.tmpDest.children[0].querySelectorAll('ul');
             this.deeperTabsLength = this.$deeperTabs.length;
 
 
@@ -216,7 +240,7 @@ var Taby = (function(document, window, undefined){
                 event.preventDefault=function(){};
 
 			// >>> set initialized default tag
-			$(this.dest)[0].setAttribute('data-tab-initialized', false);
+			this.tmpDest.setAttribute('data-tab-initialized', false); //this.dest.setAttribute('data-tab-initialized', false);
 
             var $self = this,
                 $lastShowedTab=null,
@@ -250,7 +274,7 @@ var Taby = (function(document, window, undefined){
                     // >>> ende delegation auslagern
 
                     var $thisChildTarget = target.querySelector('ul'),
-                        $allTargets      = $($self.tab + ' ul');
+                        $allTargets      = $self.tmpDest.querySelectorAll('ul');
 
                     // > wenn kein ul, dann akuellen li auf
                     //   $thisChildTarget setzen, damit
@@ -277,13 +301,13 @@ var Taby = (function(document, window, undefined){
                     // >>> set height of tab wrapper
 
                     var maxHeightOfTab    = 0,
-                        $visibleListLayer = $($self.tab + ' ul.show > li:first-child');
+                        $visibleListLayer = $self.tmpDest.querySelectorAll('ul.show > li:first-child');
 
                     for(i=0, length=$visibleListLayer.length;i<length;i++){
                         maxHeightOfTab += $visibleListLayer[i].clientHeight;
 
                     }
-                    $($self.tab)[0].style.height = maxHeightOfTab+'px';
+					$self.tmpDest.style.height = maxHeightOfTab+'px';
 
                     // >>> *****************************
                     // >>> handle content visibilty
@@ -298,7 +322,7 @@ var Taby = (function(document, window, undefined){
                     // > wenn <a>tag inhalt anzeigen
                     if(nodeName==='a'){
                         ankerTarget = $thisAElement.getAttribute('href').replace('#','');
-                        $lastShowedTab = $($self.tabNamespaces.replace('[data-tab]','')+'[data-tab-content="'+ankerTarget+'"]')[0];
+						$lastShowedTab = $self.tmpDest.parentNode.querySelector('[data-tab-content="'+ankerTarget+'"]');
                         $lastShowedTab.$removeClass('hidden');
                         // > wenn <ul> dann innerhalb ul erstes li anzeigen wenn es nicht nested ist
                     } else {
@@ -314,31 +338,30 @@ var Taby = (function(document, window, undefined){
                 };
 
             // >>> first self call
-            event.target=$(this.tab + ' ul li')[0];
-            //event.target=$(this.tab + ' ul li')[25];
+            event.target= this.tmpDest.querySelectorAll('ul li')[0];
+            //event.target=$this.tmpDest.querySelectorAll('ul li')[25];
             callback.call(null, event);
 
             // >>> handle tabs handler
-            $(this.tab + ' ul')[0].addEventListener('click', callback);
+			this.tmpDest.querySelector('ul').addEventListener('click', callback);
 
             // >>> close tab handler
-            var $locks = $(this.tabLockEl);
 
-            for(var i= 0, length=$locks.length; i<length;i++){
-                $locks[i].addEventListener('click', function(e){
-                    if(!$lastShowedTab.$hasClass('hidden') && !$($self.tab)[0].$hasClass('hidden')){
-                        $lastShowedTab.$addClass('hidden');
-                        $($self.tab)[0].$addClass('hidden');
-                    } else {
-                        $($self.tab)[0].$removeClass('hidden');
-                        event.target=$($self.tab + ' > ul > li')[0];
-                        callback.call(null, event);
-                    }
-                });
-            }
+			if(this.$tabyFixedEl instanceof Element){
+				this.$tabyFixedEl.addEventListener('click', function(e){
+					if(!$lastShowedTab.$hasClass('hidden') && !$self.tmpDest.$hasClass('hidden')){
+						$lastShowedTab.$addClass('hidden');
+						$self.tmpDest.$addClass('hidden');
+					} else {
+						$self.tmpDest.$removeClass('hidden');
+						event.target=$self.tmpDest.querySelector('ul').children[0];
+						callback.call(null, event);
+					}
+				});
+			}
 
 			// >>> set initialized tag
-			$(this.dest)[0].setAttribute('data-tab-initialized', true);
+			this.tmpDest.setAttribute('data-tab-initialized', true);
 
         }
 

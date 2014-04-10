@@ -38,7 +38,8 @@
                     document.querySelector('.content-wrapper').innerHTML = render;
 
                     // >>> start taby
-                    var taby = new Taby('body .taby');
+                    var taby = new Taby(document.querySelector('.tmp-wrapper .taby'));
+                    //var taby = new Taby('.tmp-wrapper .taby');
 
             });
         </script>
@@ -110,9 +111,9 @@
                     <li data-taby-fixed-size class="taby-lock taby-lock-icon">x</li>
                 </ul>
             </div>
-        </div>
-        <div class="content-wrapper" style="clear:both;">
-            <!-- content -->
+            <div class="content-wrapper" style="clear:both;">
+                <!-- content -->
+            </div>
         </div>
     </body>
 </html>
