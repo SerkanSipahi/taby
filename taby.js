@@ -348,7 +348,7 @@ var Taby = (function(document, window, undefined){
                         $children = $thisAElement.children;
                         for(i= 0, length=$children.length; i<length;i++){
                             event.target=$children[i];
-                            this.callback.call(null, event); break;
+							$self.callback.call(null, event); break;
                         }
                     }
 
