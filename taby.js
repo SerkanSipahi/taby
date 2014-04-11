@@ -348,7 +348,7 @@ var Taby = (function(document, window, undefined){
                         $children = $thisAElement.children;
                         for(i= 0, length=$children.length; i<length;i++){
                             event.target=$children[i];
-                            callback.call(null, event); break;
+                            this.callback.call(null, event); break;
                         }
                     }
 
@@ -361,7 +361,7 @@ var Taby = (function(document, window, undefined){
             this.callback.call(null, event);
 
             // >>> handle tabs handler
-			this.tmpDest.querySelector('ul').addEventListener('click', callback);
+			this.tmpDest.querySelector('ul').addEventListener('click', this.callback);
 
             // >>> close tab handler
 
