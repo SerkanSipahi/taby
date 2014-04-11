@@ -202,7 +202,7 @@ var Taby = (function(document, window, undefined){
     // > public methods
     Taby.prototype = {
 		open : function(tabname){
-			var event = {};
+			var event = { preventDefault:function(){}};
 			event.target= this.tmpDest.querySelector('li a[href="#'+tabname+'"]');
 			this.callback.call(null, event);
 		},
