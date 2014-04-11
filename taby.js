@@ -178,6 +178,7 @@ var Taby = (function(document, window, undefined){
         this.deeperTabsLength = 0;
         this.$children        = {};
         this.childrenLength   = 0;
+		this.callback         = null;
 
         this.lastActiveTabs   = null;
 
@@ -190,7 +191,7 @@ var Taby = (function(document, window, undefined){
 
 
 		if(this.tmpDest.getAttribute('data-tab-initialized')==='true'){
-			return;
+			return this;
 		}
 
         // > init taby
@@ -200,10 +201,10 @@ var Taby = (function(document, window, undefined){
 
     // > public methods
     Taby.prototype = {
-		state : function(state){
-			if(state==='activeTabs'){
-
-			}
+		open : function(tabname){
+			var event = {};
+			event.target= this.tmpDest.querySelector('li a[href="#'+tabname+'"]');
+			this.callback.call(null, event);
 		},
         initTaby : function(){
             this.calculateTabSizes();
@@ -264,8 +265,9 @@ var Taby = (function(document, window, undefined){
 			this.tmpDest.setAttribute('data-tab-initialized', false); //this.dest.setAttribute('data-tab-initialized', false);
 
             var $self = this,
-                $lastShowedTab=null,
-                callback = function(e){
+                $lastShowedTab=null;
+
+            this.callback = function(e){
 
                     e.preventDefault();
 
@@ -356,8 +358,7 @@ var Taby = (function(document, window, undefined){
 
             // >>> first self call
             event.target= this.tmpDest.querySelectorAll('ul li')[0];
-            //event.target=$this.tmpDest.querySelectorAll('ul li')[25];
-            callback.call(null, event);
+            this.callback.call(null, event);
 
             // >>> handle tabs handler
 			this.tmpDest.querySelector('ul').addEventListener('click', callback);
@@ -372,7 +373,7 @@ var Taby = (function(document, window, undefined){
 					} else {
 						$self.tmpDest.$removeClass('hidden');
 						event.target=$self.tmpDest.querySelector('ul').children[0];
-						callback.call(null, event);
+						$self.callback.call(null, event);
 					}
 				});
 			}
