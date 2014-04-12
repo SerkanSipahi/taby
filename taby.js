@@ -19,6 +19,8 @@ var Taby = (function(document, window, undefined){
             classList : !!('classList' in tmpElement)
         };
 
+    // >>> Hybridjs
+
     Window.prototype._$forLoop = function(callback){
 
         if (this === void 0 || this === null) { throw new TypeError(); }
@@ -57,6 +59,7 @@ var Taby = (function(document, window, undefined){
         this.$each(function(){
             this.$addClass(classname);
         });
+        return this;
     };
     /////////////////////////////////////////////
 
@@ -78,6 +81,7 @@ var Taby = (function(document, window, undefined){
         this.$each(function(){
             this.$removeClass(classname);
         });
+        return this;
     };
     /////////////////////////////////////////////
 
@@ -99,6 +103,80 @@ var Taby = (function(document, window, undefined){
         }
         return res;
 
+    };
+    // > eventListeners
+    /* > units tests nicht vergessen
+     * infos: es können mehrere click events, mit verschiedenen callbacks,
+     * auf ein domnode gesetzt werden! diese sollten auch spearat gelöscht werden
+     * können!
+     *
+     * Alternate Syntax:
+     * domnode.$on({
+     *    'click:filter('li.some-class')' : function(){
+     *
+     *    },
+     *    'click:filter('li.some-class-2')' : function(){
+     *
+     *    },
+     *    'mouseenter:find('li.other-class')' : function(){
+     *
+     *    }
+     * }, 'li');
+     *
+     *
+     *
+     * Element.prototype.filter = function(){
+     *
+     * };
+     *
+     * Element.prototype.find = function(element){
+     *    return this.querySelectorAll(element);
+     * };
+     *
+     * ...or...
+     *
+     * domnode.$on('click:filter('.some-element')', function(){
+     *
+     * }, 'global-filter-element');
+     *
+     **/
+    Element.prototype.$on = function(){
+        //this._$eventQuees[
+        //  { click : customFunc1 },
+        //  { click : customFunc2 },
+        //  { 'click:nm(foo)' : customFunc2 },
+        //  { 'click:nm(boo)' : customFunc3 },
+        //  { mouseenter : customFunc4 }
+        //  { mouseenter : customFunc4 }
+        //  { 'click:filter(.cumstom-class)' : customFunc4 }
+        //  { 'click:find(.cumstom-class)' : customFunc4 }
+        //]
+        this._$eventQueues = {};
+        this._$eventQueues[arguments[0]] = arguments[1];
+        this._$capture  = arguments[2] || false;
+        this.addEventListener.apply(this, arguments); return this;
+    };
+    Array.prototype.$on =
+    NodeList.prototype.$on =
+    HTMLCollection.prototype.$on = function(){
+        this.$each(function(){
+            this.$on.apply(this, arguments);
+        });
+        return this;
+    };
+
+    Element.prototype.$off = function(type){
+        this.removeEventListener.apply(this, [
+            type, this._$eventQueues[type], this._$capture
+        ]);
+    };
+    Array.prototype.$off =
+    NodeList.prototype.$off =
+    HTMLCollection.prototype.$off = function(){
+        this.$each(function(){
+            this.$off.apply(this, arguments);
+        });
+        return this;
     };
 
     window.$regex_until = /^(\*)?(.*?)(:until\((.*?)\))?$/;
@@ -361,12 +439,12 @@ var Taby = (function(document, window, undefined){
             this.callback.call(null, event);
 
             // >>> handle tabs handler
-			this.tmpDest.querySelector('ul').addEventListener('click', this.callback);
+			this.tmpDest.querySelector('ul').$on('click', this.callback);
 
             // >>> close tab handler
 
 			if(this.$tabyFixedEl instanceof Element){
-				this.$tabyFixedEl.addEventListener('click', function(e){
+				this.$tabyFixedEl.$on('click', function(e){
 					if(!$lastShowedTab.$hasClass('hidden') && !$self.tmpDest.$hasClass('hidden')){
 						$lastShowedTab.$addClass('hidden');
 						$self.tmpDest.$addClass('hidden');
