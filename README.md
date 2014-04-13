@@ -106,6 +106,14 @@
 
 ##### Init Taby after Document Ready
 ````js
-  var taby = new Taby(document.querySelector('.taby')); // > as domNode
-//var taby = new Taby('.taby'); // or as selector
+  var tabyInstance = new Taby(document.querySelector('.taby')); // > as domNode
+//var tabyInstance = new Taby('.taby'); // or as selector
+````
+
+Methods
+````js
+
+// > you can open a tab directly
+tabyInstance.open('sub-sub-tab-2');
+
 ````
