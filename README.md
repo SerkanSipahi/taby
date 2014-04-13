@@ -12,7 +12,7 @@
                 <li><a href="#sub-tab-1">Sub Tab 1</a></li>
                 <li><a href="#sub-tab-2">Sub Tab 2</a></li>
                 <li><a href="#sub-tab-3">Sub Tab 3</a></li>
-            </li>
+            </ul>
         </li>
         <li><a href="#tab-2">Tab 2</a></li>
         <li>Tab 3

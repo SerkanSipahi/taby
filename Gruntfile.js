@@ -50,6 +50,27 @@ module.exports = function(grunt) {
                 files : {
                     'vendor/js/jquery.js' : 'bower_components/jquery/dist/jquery.js'
                 }
+            },
+            // >>> pages
+            pages_jquery : {
+                files : {
+                    'gh-pages/jquery.js' : 'bower_components/jquery/dist/jquery.js'
+                }
+            },
+            pages_ready : {
+                files : {
+                    'gh-pages/ready.js'  : 'bower_components/domready/ready.js'
+                }
+            },
+            pages_tabyjs : {
+                files : {
+                    'gh-pages/taby.js'   : 'taby.js'
+                }
+            },
+            pages_tabycss : {
+                files : {
+                    'gh-pages/taby.css'  : 'taby.css'
+                }
             }
 		},
 		sass: {
@@ -82,14 +103,14 @@ module.exports = function(grunt) {
 		watch: {
 			js : {
 				files: watch_files,
-				tasks: ['jshint'],
+				tasks: ['jshint', 'concat'],
 				options : {
 					livereload : false
 				}
 			},
 			sass : {
 				files: ['scss/*.scss'],
-				tasks: ['sass'],
+				tasks: ['sass', 'concat'],
 				options : {
 					livereload : false
 				}
@@ -107,7 +128,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-bower-install-simple');
 	grunt.loadNpmTasks('grunt-contrib-sass');
 
-	grunt.registerTask('default', ['jshint', 'sass', 'watch']);
+	grunt.registerTask('default', ['jshint', 'sass', 'concat', 'watch']);
     grunt.registerTask('tests', ['karma']);
 
 	grunt.registerTask('bower', [
