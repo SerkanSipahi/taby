@@ -29,6 +29,7 @@ body {
 .taby[data-tab] a:link, .taby[data-tab] a:visited, .taby[data-tab] a:hover, .taby[data-tab] a:active, .taby[data-tab] a:focus {
   color: black;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .taby[data-tab] ul {
   position: relative;
