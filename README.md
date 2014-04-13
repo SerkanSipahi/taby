@@ -4,6 +4,11 @@
 * you can conntect a "tab" with its "content" easly. Tab e.g. "#sub-tab-4" is related to data-tab-content="sub-tab-4".
 * amd/commonjs (requirejs/node) ready
 
+#### Commin soon
+
+* tab generator ( without knowledge html/css )
+* theme builder ( without knowledge html/css )
+
 #### Demo Page
 
 [Demo Page](http://serkansipahi.github.io/taby/)
