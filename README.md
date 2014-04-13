@@ -1,6 +1,9 @@
 #### Magic Tab ( draft documentation )
 
-##### HTML Markup
+* no dependencies required, but if you want support <= IE8, make sure you have to load jQuery before Taby.
+* you can conntect a "tab" with its "content" easly. Tab e.g. "#sub-tab-4" is related to data-tab-content="sub-tab-4".
+
+##### Tab Definition ( you build endless nested Tabs ;) )
 ````html
 <div class="taby" data-tab>
     <ul>
@@ -27,6 +30,7 @@
 </div>
 ````
 
+#### Contents
 ````html
 <div class="taby hidden" data-tab-content="sub-tab-1">
     <h3><a name="sub-tab-1">Sub Tab 1</a></h3>
