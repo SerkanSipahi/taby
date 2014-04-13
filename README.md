@@ -1,4 +1,4 @@
-#### Magic Tab ( draft documentation )
+#### Magic Tab, build endless nested Tabs ;)
 
 * no dependencies required, but if you want support <= IE8, make sure you have to load jQuery before Taby.
 * you can conntect a "tab" with its "content" easly. Tab e.g. "#sub-tab-4" is related to data-tab-content="sub-tab-4".
@@ -7,7 +7,11 @@
 
 [Demo Page](http://serkansipahi.github.io/taby/)
 
-##### Tab Definition ( you build endless nested Tabs ;) )
+#### Design as Markup in progress
+
+![Alt text](ui/ui-preview.png "Optional title")
+
+##### Tab Definition
 ````html
 <div class="taby" data-tab>
     <ul>
