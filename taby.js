@@ -19,8 +19,6 @@ var Taby = (function(document, window, undefined){
             classList : !!('classList' in tmpElement)
         };
 
-    // >>> Hybridjs
-
     Window.prototype._$forLoop = function(callback){
 
         if (this === void 0 || this === null) { throw new TypeError(); }
