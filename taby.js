@@ -133,24 +133,69 @@ var Taby = (function(document, window, undefined){
      *    return this.querySelectorAll(element);
      * };
      *
+     * Element.prototype.delegate = function(element){
+     *    return this.querySelectorAll(element);
+     * };
+     *
      * ...or...
      *
      * domnode.$on('click:filter('.some-element')', function(){
      *
      * }, 'global-filter-element');
      *
+     * ...or for delegate...
+     *
+     * domnode.$on('ul:delegate(li)', function(){
+     *
+     * });
+     *
      **/
     Element.prototype.$on = function(){
-        //this._$eventQuees[
-        //  { click : customFunc1 },
-        //  { click : customFunc2 },
-        //  { 'click:nm(foo)' : customFunc2 },
-        //  { 'click:nm(boo)' : customFunc3 },
-        //  { mouseenter : customFunc4 }
-        //  { mouseenter : customFunc4 }
-        //  { 'click:filter(.cumstom-class)' : customFunc4 }
-        //  { 'click:find(.cumstom-class)' : customFunc4 }
-        //]
+        /*
+            Event Delegation:
+            ======================
+            Event.prototype.$delegate = function(foo){
+
+                var target = e ? e.target : window.event.srcElement;
+
+                //element
+                if(true){}
+                //class or id
+                if(true){}
+                //and it has attribute
+                if(true){}
+
+                return target.nodeName.toLowerCase() === foo ? true : false;
+            }
+            Element.prototype.on = function(type, callback, foo){
+                this.addEventListener(type, function(e){
+                    if(e.$delegate(foo) && foo !==void(0)){
+                        callback.apply(e.target, arguments);
+                    } else if(foo===void(0)){
+                        callback.apply(this, arguments);
+                    }
+                });
+            }
+
+            var someid = document.querySelector('#huhuu');
+            someid.on('click', function(e){
+                console.log('Hello World!');
+            }, 'span');
+        */
+
+        /*
+            this._$eventQuees[
+                { click : customFunc1 },
+                { click : customFunc2 },
+                { 'click:nm(foo)' : customFunc2 },
+                { 'click:nm(boo)' : customFunc3 },
+                { mouseenter : customFunc4 }
+                { mouseenter : customFunc4 }
+                { 'click:filter(.cumstom-class)' : customFunc4 }
+                { 'click:find(.cumstom-class)' : customFunc4 }
+            ]
+         * */
+
         this._$eventQueues = {};
         this._$eventQueues[arguments[0]] = arguments[1];
         this._$capture  = arguments[2] || false;
