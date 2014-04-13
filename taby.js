@@ -118,6 +118,9 @@ var Taby = (function(document, window, undefined){
      *    },
      *    'mouseenter:find('li.other-class')' : function(){
      *
+     *    },
+     *    'mouseenter:delegate('a.other-class')' : function(){
+     *
      *    }
      * }, 'li');
      *
