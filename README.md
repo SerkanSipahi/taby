@@ -106,6 +106,6 @@
 
 ##### Init Taby after Document Ready
 ````js
-  var taby = new Taby(document.querySelector('.tmp-wrapper .taby')); // > as domNode
-//var taby = new Taby('.tmp-wrapper .taby'); // or as selector
+  var taby = new Taby(document.querySelector('.taby')); // > as domNode
+//var taby = new Taby('.taby'); // or as selector
 ````
