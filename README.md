@@ -12,6 +12,10 @@
 
 ![Alt text](ui/ui-preview.png "Optional title")
 
+##### Installation
+
+see source code on [Demo Page](http://serkansipahi.github.io/taby/)
+
 ##### Tab Definition
 ````html
 <div class="taby" data-tab>
