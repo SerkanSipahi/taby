@@ -1,7 +1,8 @@
-#### Magic Tab, build endless nested Tabs ;)
+#### Magic, SEO-Friendly Tab. Build endless nested Tabs ;)
 
 * no dependencies required, but if you want support <= IE8, make sure you have to load jQuery before Taby.
 * you can conntect a "tab" with its "content" easly. Tab e.g. "#sub-tab-4" is related to data-tab-content="sub-tab-4".
+* amd/commonjs (requirejs/node) ready
 
 #### Demo Page
 
