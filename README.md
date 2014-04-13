@@ -8,13 +8,14 @@
 
 [Demo Page](http://serkansipahi.github.io/taby/)
 
-#### Design as Markup in progress
-
-![Alt text](ui/ui-preview.png "Optional title")
 
 ##### Installation
 
 see source code on [Demo Page](http://serkansipahi.github.io/taby/)
+
+#### Design as Markup in progress
+
+![Alt text](ui/ui-preview.png "Optional title")
 
 ##### Tab Definition
 ````html
