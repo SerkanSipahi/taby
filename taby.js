@@ -330,6 +330,19 @@ var Taby = (function(document, window, undefined){
 			event.target= this.tmpDest.querySelector('li a[href="#'+tabname+'"]');
 			this.callback.call(null, event);
 		},
+		getState : function(value){
+			var res=null;
+			if(value=== '*active:domenode'){
+				res = this.lastActiveTabs || null;
+			}
+			if(value==='last:active:domnode'){
+				res = this.lastActiveTabs[0] || null;
+			}
+			if(value==='last:active:tabname'){
+				res = this.lastActiveTabs[0].querySelector('a').getAttribute('href').replace('#', '')  || null;
+			}
+			return res;
+		},
         initTaby : function(){
             this.calculateTabSizes();
             this.setEvents();
