@@ -42,6 +42,15 @@
 
                     // >>> start taby
                     var taby = new Taby(document.querySelector('.tmp-wrapper .taby'));
+                    taby.onSelect({
+                        14 : function(e){
+                            console.log('14');
+                            return "asdas";
+                        },
+                        27 : function(e){
+                            console.log('27')
+                        }
+                    });
                     //var taby = new Taby('.tmp-wrapper .taby');
 
             });

@@ -303,6 +303,7 @@ var Taby = (function(document, window, undefined){
         this.$children        = {};
         this.childrenLength   = 0;
 		this.callback         = null;
+		this.onSelectObj      = null;
 
         this.lastActiveTabs   = null;
 
@@ -329,6 +330,9 @@ var Taby = (function(document, window, undefined){
 			var event = { preventDefault:function(){}};
 			event.target= this.tmpDest.querySelector('li a[href="#'+tabname+'"]');
 			this.callback.call(null, event);
+		},
+		onSelect : function(obj){
+			this.onSelectObj = obj;
 		},
 		getState : function(value){
 			var res=null;
@@ -473,6 +477,15 @@ var Taby = (function(document, window, undefined){
                     if($lastShowedTab !== null){
                         $lastShowedTab.$addClass('hidden');
                     }
+
+					//>>> onSelectCallback
+					for(var select in $self.onSelectObj){
+						if(!$self.onSelectObj.hasOwnProperty(select)){ continue; }
+						if(select === $self.getState('last:active:tabname')){
+							$self.onSelectObj[select].call(null, $lastShowedTab);
+						}
+					}
+					//>>> ****************
 
                     // > wenn <a>tag inhalt anzeigen
                     if(nodeName==='a'){
