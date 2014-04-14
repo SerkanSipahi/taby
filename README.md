@@ -16,7 +16,30 @@
 
 ##### Installation
 
-see source code on [Demo Page](http://serkansipahi.github.io/taby/)
+````bash
+git clone https://github.com/SerkanSipahi/taby.git
+````
+
+````html
+    <head>
+        <meta charset="utf-8">
+        <title>Taby</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2, user-scalable=yes">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="stylesheet" type="text/css" href="taby.css" />
+        <!--[if lte IE 9]>
+        <script src="vendor/js/jquery.js"></script>
+        <![endif]-->
+        <script src="vendor/js/ready.js"></script>
+        <script src="taby.js"></script>
+        <script>
+            domready(function () {
+                var taby = new Taby(document.querySelector('.taby'));
+            });
+        </script>
+    </head>
+````
 
 #### Design as Markup in progress
 
