@@ -410,101 +410,99 @@ var Taby = (function(document, window, undefined){
 
             this.callback = function(e){
 
-                    e.preventDefault();
+				e.preventDefault();
 
-                    // >>> *****************************
-                    // >>> read operation
+				// >>> *****************************
+				// >>> read operation
 
-                    // >>> start event delegation auslagern nach addeventlistener
-                    var target = e.target,
-                        $thisAElement = {},
-                        tmpUlContainer = [], i= 0, length=0;
+				// >>> start event delegation auslagern nach addeventlistener
+				var target = e.target,
+					$thisAElement = {},
+					tmpUlContainer = [], i= 0, length=0;
 
-                    if(e.target.nodeName.toLowerCase() === 'a'){
-                        $thisAElement = e.target;
-                        target = e.target.parentNode;
-                    } else {
-                        $thisAElement = e.target.children[0];
-                        if(e.target.children.length===0){
-                            return;
-                        }
-                    }
-
-                    // >>> *******************************
-                    // >>> set active class
-
-                    $self.handleActiveTabs(target);
-
-                    // >>> ende delegation auslagern
-
-                    var $thisChildTarget = target.querySelector('ul'),
-                        $allTargets      = $self.tmpDest.querySelectorAll('ul');
-
-                    // > wenn kein ul, dann akuellen li auf
-                    //   $thisChildTarget setzen, damit
-                    //   aus dieser das parent ul ermittelt werden kann
-                    if($thisChildTarget===null) {
-                        $thisChildTarget = target;
-                    }
-
-                    tmpUlContainer = $thisChildTarget.$closest('*ul:until(.taby)');
-                    // >>> *****************************
-                    // >>> write operation
-
-                    // > alle ul´s ausblenden
-                    $allTargets.$removeClass('show');
-
-                    // > alle ul´s anzeigen die angezeigt werden sollen
-                    tmpUlContainer.$addClass('show');
-
-                    // >>> *****************************
-                    // >>> set height of tab wrapper
-
-                    var maxHeightOfTab    = 0,
-                        $visibleListLayer = $self.tmpDest.querySelectorAll('ul.show > li:first-child');
-
-                    $visibleListLayer.$each(function(){
-                        maxHeightOfTab += this.clientHeight;
-                    });
-					$self.tmpDest.style.height = maxHeightOfTab+'px';
-
-                    // >>> *****************************
-                    // >>> handle content visibilty
-
-                    var ankerTarget = '', $children,
-                        nodeName    = $thisAElement.nodeName.toLowerCase();
-
-                    if($lastShowedTab !== null){
-                        $lastShowedTab.$addClass('hidden');
-                    }
-
-					//>>> onSelectCallback
-					for(var select in $self.onSelectObj){
-						if(!$self.onSelectObj.hasOwnProperty(select)){ continue; }
-						if(select === $self.getState('last:active:tabname')){
-							$self.onSelectObj[select].call(null, $lastShowedTab);
-						}
+				if(e.target.nodeName.toLowerCase() === 'a'){
+					$thisAElement = e.target;
+					target = e.target.parentNode;
+				} else {
+					$thisAElement = e.target.children[0];
+					if(e.target.children.length===0){
+						return;
 					}
-					//>>> ****************
+				}
 
-                    // > wenn <a>tag inhalt anzeigen
-                    if(nodeName==='a'){
-                        ankerTarget = $thisAElement.getAttribute('href').replace('#','');
-						$lastShowedTab = $self.tmpDest.parentNode.querySelector('[data-tab-content="'+ankerTarget+'"]');
-                        $lastShowedTab.$removeClass('hidden');
-                        // > wenn <ul> dann innerhalb ul erstes li anzeigen wenn es nicht nested ist
-                    } else {
+				// >>> *******************************
+				// >>> set active class
 
-                        $children = $thisAElement.children;
-                        for(i= 0, length=$children.length; i<length;i++){
-                            event.target=$children[i];
-							$self.callback.call(null, event); break;
-                        }
-                    }
+				$self.handleActiveTabs(target);
 
+				// >>> ende delegation auslagern
 
+				var $thisChildTarget = target.querySelector('ul'),
+					$allTargets      = $self.tmpDest.querySelectorAll('ul');
 
-                };
+				// > wenn kein ul, dann akuellen li auf
+				//   $thisChildTarget setzen, damit
+				//   aus dieser das parent ul ermittelt werden kann
+				if($thisChildTarget===null) {
+					$thisChildTarget = target;
+				}
+
+				tmpUlContainer = $thisChildTarget.$closest('*ul:until(.taby)');
+				// >>> *****************************
+				// >>> write operation
+
+				// > alle ul´s ausblenden
+				$allTargets.$removeClass('show');
+
+				// > alle ul´s anzeigen die angezeigt werden sollen
+				tmpUlContainer.$addClass('show');
+
+				// >>> *****************************
+				// >>> set height of tab wrapper
+
+				var maxHeightOfTab    = 0,
+					$visibleListLayer = $self.tmpDest.querySelectorAll('ul.show > li:first-child');
+
+				$visibleListLayer.$each(function(){
+					maxHeightOfTab += this.clientHeight;
+				});
+				$self.tmpDest.style.height = maxHeightOfTab+'px';
+
+				// >>> *****************************
+				// >>> handle content visibilty
+
+				var ankerTarget = '', $children,
+					nodeName    = $thisAElement.nodeName.toLowerCase();
+
+				if($lastShowedTab !== null){
+					$lastShowedTab.$addClass('hidden');
+				}
+
+				// > wenn <a>tag inhalt anzeigen
+				if(nodeName==='a'){
+					ankerTarget = $thisAElement.getAttribute('href').replace('#','');
+					$lastShowedTab = $self.tmpDest.parentNode.querySelector('[data-tab-content="'+ankerTarget+'"]');
+					$lastShowedTab.$removeClass('hidden');
+					// > wenn <ul> dann innerhalb ul erstes li anzeigen wenn es nicht nested ist
+				} else {
+
+					$children = $thisAElement.children;
+					for(i= 0, length=$children.length; i<length;i++){
+						event.target=$children[i];
+						$self.callback.call(null, event); break;
+					}
+				}
+
+				//>>> onSelectCallback
+				for(var select in $self.onSelectObj){
+					if(!$self.onSelectObj.hasOwnProperty(select)){ continue; }
+					if(select === $self.getState('last:active:tabname')){
+						$self.onSelectObj[select].call(null, $lastShowedTab);
+					}
+				}
+				//>>> ****************
+
+            };
 
             // >>> first self call
             event.target= this.tmpDest.querySelectorAll('ul li')[0];
