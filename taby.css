@@ -97,10 +97,6 @@ body {
 .taby[data-tab] ul li.taby-lock {
   background-color: gray;
 }
-.taby[data-tab] ul li.taby-active {
-  background-color: #d9dccc;
-  font-weight: bold;
-}
 .taby[data-tab] ul li.taby-active > ul {
   font-weight: normal;
 }
