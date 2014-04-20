@@ -39,6 +39,9 @@ var Taby = (function(document, window, undefined){
         Window.prototype._$forLoop.call(this, callback);
     };
 
+    // >>> Element.prototype.find = Element.prototype.querySelectorAll
+    // >>> $ = document.querySelectorAll.bind(document)
+
     // >>> $addClass
     Element.prototype.$addClass = function(classname){
 
