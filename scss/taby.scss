@@ -73,8 +73,9 @@ $tab-height  : 45px;
 	}
 }
 
-// >>> Theme
-.taby[data-tab] {
+// >>> Theme default
+.taby[data-tab],
+.taby[data-tab="default"] {
 
 	font-size: 14px;
 
@@ -127,4 +128,8 @@ $tab-height  : 45px;
 			display: block;
 		}
 	}
+}
+// >>> Theme blue-ice
+.taby[data-tab="blue-ice"] {
+
 }

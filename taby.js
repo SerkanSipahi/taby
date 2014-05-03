@@ -39,7 +39,10 @@ var Taby = (function(document, window, undefined){
         Window.prototype._$forLoop.call(this, callback);
     };
 
-    // >>> Element.prototype.find = Element.prototype.querySelectorAll
+    // >>> Element.prototype.$find = Element.prototype.querySelectorAll
+    // >>> NodeList.prototype.$find = Element.prototype.querySelectorAll
+    // >>> HTMLCollection.prototype.$find = Element.prototype.querySelectorAll
+    // >>> Array.prototype.$find = Element.prototype.querySelectorAll
     // >>> $ = document.querySelectorAll.bind(document)
 
     // >>> $addClass
@@ -50,7 +53,7 @@ var Taby = (function(document, window, undefined){
         if(_feature.classList){
             this.classList.add(classname);
         } else {
-            $qs(this).addClass('classname');
+            $qs(this).addClass(classname);
         }
         return this;
     };
@@ -72,7 +75,7 @@ var Taby = (function(document, window, undefined){
         if(_feature.classList){
             this.classList.remove(classname);
         } else {
-            $qs(this).removeClass('classname');
+            $qs(this).removeClass(classname);
         }
         return this;
     };

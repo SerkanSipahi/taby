@@ -65,24 +65,29 @@ body {
   margin: 0;
 }
 
-.taby[data-tab] {
+.taby[data-tab],
+.taby[data-tab="default"] {
   font-size: 14px;
 }
-.taby[data-tab] ul > li {
+.taby[data-tab] ul > li,
+.taby[data-tab="default"] ul > li {
   cursor: pointer;
   background-color: #bdc0b0;
   text-align: center;
   border-right: 2px solid #ffffff;
   border-bottom: 2px solid #ffffff;
 }
-.taby[data-tab] ul li:last-child {
+.taby[data-tab] ul li:last-child,
+.taby[data-tab="default"] ul li:last-child {
   border-right: none;
 }
-.taby[data-tab] ul ul > li {
+.taby[data-tab] ul ul > li,
+.taby[data-tab="default"] ul ul > li {
   border-right: none;
   background-color: #d9dccc;
 }
-.taby[data-tab] ul ul > li:after {
+.taby[data-tab] ul ul > li:after,
+.taby[data-tab="default"] ul ul > li:after {
   content: " ";
   display: block;
   border-right: 2px solid #bdc0b0;
@@ -90,16 +95,20 @@ body {
   position: relative;
   top: -17px;
 }
-.taby[data-tab] ul ul > li:last-child:after {
+.taby[data-tab] ul ul > li:last-child:after,
+.taby[data-tab="default"] ul ul > li:last-child:after {
   content: "";
   border-right: none;
 }
-.taby[data-tab] ul li.taby-lock {
+.taby[data-tab] ul li.taby-lock,
+.taby[data-tab="default"] ul li.taby-lock {
   background-color: gray;
 }
-.taby[data-tab] ul li.taby-active > ul {
+.taby[data-tab] ul li.taby-active > ul,
+.taby[data-tab="default"] ul li.taby-active > ul {
   font-weight: normal;
 }
-.taby[data-tab] ul li a {
+.taby[data-tab] ul li a,
+.taby[data-tab="default"] ul li a {
   display: block;
 }
