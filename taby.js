@@ -551,9 +551,7 @@ var Taby = (function(document, window, undefined){
                 return new Taby(this);
             };
         })(window.jQuery || window.Zepto);
-    } else {
-        return Taby;
     }
-
+    return Taby;
 
 }(document, this, void(0)));
